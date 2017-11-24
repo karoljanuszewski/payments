@@ -3,7 +3,6 @@ package pl.sdacademy;
 import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +23,10 @@ public class HourlyEmployee extends Employee {
         super(name, address, bankAccountNumber);
         this.hourlyRate = hourlyRate;
         workingDays = new LinkedList<>();
+    }
+
+    public void addWorkingDay(WorkingDay workingDay) {
+        workingDays.add(workingDay);
     }
 
     @Override
