@@ -22,6 +22,8 @@ class HourlyEmployeeTest {
         hourlyEmployee = new HourlyEmployee("name", "address", "number", BigDecimal.ONE);
     }
 
+    //TODO sprawdzić czy da się wykorzystać parametrized tests dla sprawdzenia calculatePayment
+    //http://junit.org/junit5/docs/current/user-guide/#writing-tests-parameterized-tests
     @Test
     void shouldReturnZeroForNonPaymentDay() {
         BigDecimal payment = hourlyEmployee.calculatePayment(LocalDate.of(2017, 11, 25));
@@ -29,11 +31,31 @@ class HourlyEmployeeTest {
     }
 
     @Test
-    void shouldReturnRegularPayment() {
+    void shouldReturnRegularPaymentFromOneDay() {
         WorkingDay workingDay = new WorkingDay(LocalDate.of(2017, 11, 24), 8);
         hourlyEmployee.addWorkingDay(workingDay);
         BigDecimal payment = hourlyEmployee.calculatePayment(LocalDate.of(2017, 11, 24));
         assertEquals(payment, BigDecimal.ONE.multiply(new BigDecimal(8)));
+    }
+
+    @Test
+    void shouldReturnOvertimePaymentFromOneDay() {
+        WorkingDay workingDay = new WorkingDay(LocalDate.of(2017, 11, 24), 10);
+        hourlyEmployee.addWorkingDay(workingDay);
+        BigDecimal payment = hourlyEmployee.calculatePayment(LocalDate.of(2017, 11, 24));
+        BigDecimal expectedResult = new BigDecimal(11);
+        assertTrue(payment.compareTo(expectedResult) == 0);
+    }
+
+    @Test
+    void shouldReturnPaymentFromTwoWorkingDays() {
+        hourlyEmployee.addWorkingDay(new WorkingDay(LocalDate.of(2017, 11, 19), 8));
+        hourlyEmployee.addWorkingDay(new WorkingDay(LocalDate.of(2017, 11, 20), 8));
+        hourlyEmployee.addWorkingDay(new WorkingDay(LocalDate.of(2017, 11, 24), 10));
+        hourlyEmployee.addWorkingDay(new WorkingDay(LocalDate.of(2017, 11, 25), 10));
+        BigDecimal payment = hourlyEmployee.calculatePayment(LocalDate.of(2017, 11, 24));
+        BigDecimal expectedResult = new BigDecimal(19);
+        assertTrue(payment.compareTo(expectedResult) == 0);
     }
 
     @Test
