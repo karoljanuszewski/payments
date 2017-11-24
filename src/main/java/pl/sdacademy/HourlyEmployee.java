@@ -1,6 +1,7 @@
 package pl.sdacademy;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,5 +21,15 @@ public class HourlyEmployee extends Employee {
         super(name, address, bankAccountNumber);
         this.hourlyRate = hourlyRate;
         workingDays = new LinkedList<>();
+    }
+
+    @Override
+    public boolean isPaymentDay(LocalDate day) {
+        return false;
+    }
+
+    @Override
+    public BigDecimal calculatePayment(LocalDate day) {
+        return null;
     }
 }
