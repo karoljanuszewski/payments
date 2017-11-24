@@ -3,8 +3,10 @@ package pl.sdacademy;
 import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * http://dominisz.pl
@@ -41,19 +43,36 @@ public class HourlyEmployee extends Employee {
     }
 
     private BigDecimal calculatePayment(List<WorkingDay> workingDays) {
-        return BigDecimal.ZERO;
+        BigDecimal payment = BigDecimal.ZERO;
+        for (WorkingDay workingDay : workingDays) {
+            payment = payment.add(calculatePayment(workingDay));
+        }
+        return payment;
+    }
+
+    private BigDecimal calculatePayment(WorkingDay workingDay) {
+        if (workingDay.getHours() <= REGULAR_HOURS) {
+            return hourlyRate.multiply(new BigDecimal(workingDay.getHours()));
+        } else {
+            BigDecimal regularPayment
+                    = hourlyRate.multiply(new BigDecimal(REGULAR_HOURS));
+            BigDecimal overtimeRate
+                    = hourlyRate.multiply(OVERTIME_RATE);
+            BigDecimal overtimePayment
+                    = overtimeRate.multiply(new BigDecimal(workingDay.getHours() - REGULAR_HOURS));
+            return regularPayment.add(overtimePayment);
+        }
     }
 
     private List<WorkingDay> findWorkingDays(LocalDate firstDay, LocalDate lastDay) {
-        return null;
+        return workingDays.stream()
+                .filter(workingDay -> workingDay.betweenDays(firstDay, lastDay))
+                .collect(Collectors.toList());
     }
 
     @Override
     public LocalDate findFirstDayOfWorkingPeriod(LocalDate paymentDate) {
-        return null;
+        return paymentDate.minusDays(4);
     }
-
-
-
 
 }

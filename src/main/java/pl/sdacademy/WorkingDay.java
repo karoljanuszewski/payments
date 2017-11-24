@@ -16,4 +16,9 @@ public class WorkingDay {
     private LocalDate date;
     private int hours;
 
+    public boolean betweenDays(LocalDate firstDay, LocalDate lastDay) {
+        return firstDay.compareTo(date) <= 0
+                && date.compareTo(lastDay) <= 0;
+    }
+
 }
