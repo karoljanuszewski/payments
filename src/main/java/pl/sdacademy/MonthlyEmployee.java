@@ -22,4 +22,9 @@ public class MonthlyEmployee extends Employee {
     public BigDecimal calculatePayment(LocalDate day) {
         return null;
     }
+
+    @Override
+    public LocalDate findFirstDayOfWorkingPeriod(LocalDate paymentDate) {
+        return null;
+    }
 }

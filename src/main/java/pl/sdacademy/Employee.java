@@ -18,8 +18,10 @@ public abstract class Employee {
     private String address;
     private String bankAccountNumber;
 
-    public abstract boolean isPaymentDay(LocalDate day);
+    public abstract boolean isPaymentDay(LocalDate date);
 
-    public abstract BigDecimal calculatePayment(LocalDate day);
+    public abstract BigDecimal calculatePayment(LocalDate date);
+
+    public abstract LocalDate findFirstDayOfWorkingPeriod(LocalDate paymentDate);
 
 }
